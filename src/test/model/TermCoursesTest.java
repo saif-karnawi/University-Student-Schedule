@@ -18,7 +18,17 @@ class TermCoursesTest {
 
     @Test
     public void testAddCourse() {
+        //empty term, no courses added yet
+        assertEquals(0,termOne.getTermCourses().size());
 
+        //Add a course
+        LinkedList<String> days = new LinkedList<String>();
+        days.add("Thursday");
+        days.add("Tuesday");
+        Course newCourse = new Course("CPSC 210", 8, 4, 3, days, 1300);
+        termOne.addCourse(newCourse);
+
+        assertEquals(1,termOne.getTermCourses().size());
     }
 
     @Test
@@ -45,6 +55,5 @@ class TermCoursesTest {
     public void testTermDifficulty() {
 
     }
-
 
 }

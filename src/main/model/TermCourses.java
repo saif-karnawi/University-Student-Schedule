@@ -1,7 +1,5 @@
 package model;
 
-import sun.awt.image.ImageWatched;
-
 import java.util.LinkedList;
 
 public class TermCourses {
@@ -13,34 +11,64 @@ public class TermCourses {
     }
 
     public LinkedList<Course> getTermCourses() {
-        return null;
+        return data;
     }
 
     public void addCourse(Course courseToBeAdded) {
+        data.add(courseToBeAdded);
     }
 
     public int sumOfHours(String typeOfHours) {
-        return 0;
+        if (typeOfHours.equalsIgnoreCase("max")) {
+            int sumOfMaxHours = 0;
+
+            for (Course nextCourse : data) {
+                sumOfMaxHours += nextCourse.getMaxWeeklyHours();
+            }
+            return sumOfMaxHours;
+        } else {
+            int sumOfMinHours = 0;
+
+            for (Course nextCourse : data) {
+                sumOfMinHours += nextCourse.getMinWeeklyHours();
+            }
+
+            return sumOfMinHours;
+        }
     }
 
     public int getDailyMaxHours() {
-        return 0;
+
+        return Math.round(sumOfHours("max") / 7);
+
     }
 
     public int getMonthlyMaxHours() {
-        return 0;
+
+        return Math.round(sumOfHours("max") * 4);
+
     }
 
     public int getDailyMinHours() {
-        return 0;
+
+        return Math.round(sumOfHours("min") / 7);
+
     }
 
     public int getMonthlyMinHours() {
-        return 0;
+
+        return Math.round(sumOfHours("min") * 4);
+
     }
 
     public int termDifficulty() {
-        return 0;
+        int sumOfDifficulties = 0;
+
+        for (Course nextCourse: data) {
+            sumOfDifficulties += nextCourse.getCourseDifficulty();
+        }
+
+        return sumOfDifficulties;
     }
 
 

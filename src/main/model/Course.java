@@ -45,6 +45,4 @@ public class Course {
         return days;
     }
 
-
-    //hours per day - hours per week, difficulty average
 }
