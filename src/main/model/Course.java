@@ -2,15 +2,22 @@ package model;
 
 import java.util.LinkedList;
 
+//Each course object has a name, maximum and minimum weekly hours, difficulty out of 5,
+// days of the course, and the time.
 public class Course {
 
-    private int maxWeeklyHours = 0;
-    private int minWeeklyHours = 0;
-    private int courseDifficulty = 0;
-    private int time = 0;
-    String courseName = null;
-    private LinkedList<String> days = new LinkedList<String>();
+    private int maxWeeklyHours;
+    private int minWeeklyHours;
+    private int courseDifficulty;
+    private int time;
+    private String courseName;
+    private LinkedList<String> days;
 
+    //REQUIRES: an actual course name and not null, max and min weekly hours to be integers > 0, course difficulty
+    // to be an integer between 1 and 5, days to have at least one day, and the time to be an int > 0 and
+    // less than or equal to 2400 - representing a time on a 24-hour clock.
+    //MODIFIES: this.
+    //EFFECTS: initializes all the fields by setting them to the arguments passed to the constructor
     public Course(String courseName, int maxWeeklyHours, int minWeeklyHours, int courseDifficulty,
                   LinkedList<String> days, int time) {
         this.maxWeeklyHours = maxWeeklyHours;

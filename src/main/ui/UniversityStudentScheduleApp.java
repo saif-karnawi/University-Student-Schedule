@@ -1,6 +1,5 @@
 package ui;
 
-//University Student Schedule app! this class contains the user interface methods.
 
 import model.Course;
 import model.TermCourses;
@@ -8,6 +7,7 @@ import model.TermCourses;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+//University Student Schedule app! this class contains the user interface methods.
 public class UniversityStudentScheduleApp {
 
     private Scanner scanner = new Scanner(System.in);
@@ -19,7 +19,8 @@ public class UniversityStudentScheduleApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: Processes user decision regarding if they would like to add course(s)
+    //EFFECTS: Processes user decision regarding if they would like to add another course(s)
+    //If not, it shows the results of their input
     public void runApplication() {
         showMainMenu();
         String decision = scanner.nextLine();
@@ -29,7 +30,7 @@ public class UniversityStudentScheduleApp {
         } else if (decision.equals("add")) {
             boolean addAnotherCourse = true;
             while (addAnotherCourse) {
-                String decision2 = null;
+                String decision2;
                 addCourse();
                 System.out.println("Would you like to add another course?");
                 System.out.println("Type 'yes' if you want to add more courses, type anything else for no");
@@ -55,13 +56,14 @@ public class UniversityStudentScheduleApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: Gets the course info from user and then adds the course to our LinkedList
+    //EFFECTS: Gets the course info from user, creates a course object
+    // and then adds the course to our LinkedList
     private void addCourse() {
-        String courseName = null;
-        int maxWeeklyHours = 0;
-        int minWeeklyHours = 0;
-        int courseDifficulty = 0;
-        int time = 0;
+        String courseName;
+        int maxWeeklyHours;
+        int minWeeklyHours;
+        int courseDifficulty;
+        int time;
 
         System.out.println("Please enter the name of your course.");
         courseName = scanner.nextLine();
@@ -80,23 +82,22 @@ public class UniversityStudentScheduleApp {
         termOne.addCourse(newCourse);
     }
 
+    //MODIFIES: this.
+    //EFFECTS: Gets the days that the user has class in a LinkedList<String>
     public LinkedList<String> getCourseDays() {
 
         LinkedList<String> days = new LinkedList<String>();
         boolean anotherDay = true;
         String day;
-        String decision = null;
+        String decision;
 
         while (anotherDay) {
-            day = null;
             System.out.println("What days do you have this course? If there are multiple, enter the first day only");
             day = scanner.nextLine();
             days.add(day);
             System.out.println("Do you have this course another day? Type either 'yes' or anything else for no");
             decision = scanner.nextLine();
-            if (decision.equalsIgnoreCase("yes")) {
-                anotherDay = true;
-            } else {
+            if (!decision.equalsIgnoreCase("yes")) {
                 anotherDay = false;
             }
         }
@@ -104,10 +105,11 @@ public class UniversityStudentScheduleApp {
         return days;
     }
 
-    //Shows the info of the courses and tells the user goodbye
+    //MODIFIES: this.
+    //Effects: Shows the info of the courses and tells the user goodbye
     public void showResults() {
         int courseNumber = 0;
-        System.out.println("Course times:");
+        System.out.println("\nCourse times:");
         for (Course nextCourse : termOne.getTermCourses()) {
             courseNumber += 1;
             System.out.println("Course " + courseNumber + ": " + nextCourse.getName());
@@ -128,6 +130,7 @@ public class UniversityStudentScheduleApp {
         displayHourStats();
     }
 
+    //EFFECTS: shows the user the info regarding study hours
     public void displayHourStats() {
 
         System.out.println("The maximum daily hours you will be studying is approximately "

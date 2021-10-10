@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//tests for the TermCourses class
 class TermCoursesTest {
 
     TermCourses termOne;
