@@ -98,4 +98,16 @@ class TermCoursesTest {
         assertEquals(Math.round(((5+3) / 2)) , termOne.getTermDifficulty());
     }
 
+    @Test
+    public void testGetTermCourses() {
+        termOne.addCourse(newCourse);
+        termOne.addCourse(newCourse2);
+
+        LinkedList<Course> testList = new LinkedList<Course>();
+        testList.add(newCourse);
+        testList.add(newCourse2);
+
+        assertEquals(testList, termOne.getTermCourses());
+    }
+
 }
