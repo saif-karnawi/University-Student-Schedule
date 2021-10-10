@@ -91,7 +91,7 @@ class TermCoursesTest {
     }
 
     @Test
-    public void testTermDifficulty() {
+    public void testGetTermDifficulty() {
         //term difficulty: (5+3) / 2
         termOne.addCourse(newCourse);
         termOne.addCourse(newCourse2);
