@@ -10,10 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class TermCoursesTest {
 
     TermCourses termOne;
+    Course newCourse;
+    Course newCourse2;
 
     @BeforeEach
     public void runBefore() {
         termOne = new TermCourses();
+
+        LinkedList<String> days = new LinkedList<String>();
+        days.add("Thursday");
+        days.add("Tuesday");
+        newCourse = new Course("CPSC 210", 7, 3, 3, days, 1500);
+        newCourse2 = new Course("MATH 200", 8, 4, 5, days, 900);
     }
 
     @Test
@@ -31,29 +39,62 @@ class TermCoursesTest {
         assertEquals(1,termOne.getTermCourses().size());
     }
 
+
     @Test
-    public void testGetTermCourses() {
+    public void testSumOfHours() {
+
+        termOne.addCourse(newCourse);
+        termOne.addCourse(newCourse2);
+        //testing sum of max hours, 8+7
+        assertEquals(15 , termOne.sumOfHours("max"));
+        //testing sum of min hours, 3 + 4
+        assertEquals(7 , termOne.sumOfHours("min"));
 
     }
 
     @Test
     public void testGetDailyMaxHours() {
 
+        termOne.addCourse(newCourse);
+        termOne.addCourse(newCourse2);
+
+        assertEquals(Math.round((8 + 7) / 7), termOne.getDailyMaxHours());
     }
 
     @Test
     public void testGetMonthlyMaxHours() {
 
+        termOne.addCourse(newCourse);
+        termOne.addCourse(newCourse2);
+
+        assertEquals(((8 + 7) * 4), termOne.getMonthlyMaxHours());
     }
 
     @Test
     public void testGetMonthlyMinHours() {
 
+        termOne.addCourse(newCourse);
+        termOne.addCourse(newCourse2);
+
+        assertEquals(((4 + 3) * 4), termOne.getMonthlyMinHours());
+    }
+
+    @Test
+    public void testGetDailyMinHours() {
+
+        termOne.addCourse(newCourse);
+        termOne.addCourse(newCourse2);
+
+        assertEquals(Math.round((4 + 3) / 7), termOne.getDailyMinHours());
+
     }
 
     @Test
     public void testTermDifficulty() {
-
+        //term difficulty: (5+3) / 2
+        termOne.addCourse(newCourse);
+        termOne.addCourse(newCourse2);
+        assertEquals(Math.round(((5+3) / 2)) , termOne.getTermDifficulty());
     }
 
 }

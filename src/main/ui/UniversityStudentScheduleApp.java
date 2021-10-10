@@ -124,9 +124,7 @@ public class UniversityStudentScheduleApp {
             }
             System.out.println(" at " + nextCourse.getTime());
         }
-
-        int difficulty = Math.round(termOne.termDifficulty() / termOne.getTermCourses().size());
-        System.out.println("\n\nApproximate term difficulty: " + (difficulty));
+        System.out.println("\n\nApproximate term difficulty: " + (termOne.getTermDifficulty()));
         displayHourStats();
     }
 

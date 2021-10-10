@@ -61,14 +61,16 @@ public class TermCourses {
 
     }
 
-    public int termDifficulty() {
+    public int getTermDifficulty() {
         int sumOfDifficulties = 0;
+        int difficultyAverage = 0;
 
         for (Course nextCourse: data) {
             sumOfDifficulties += nextCourse.getCourseDifficulty();
         }
 
-        return sumOfDifficulties;
+        difficultyAverage = sumOfDifficulties / getTermCourses().size();
+        return difficultyAverage;
     }
 
 
