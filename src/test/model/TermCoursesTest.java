@@ -23,6 +23,9 @@ class TermCoursesTest {
         days.add("Tuesday");
         newCourse = new Course("CPSC 210", 7, 3, 3, days, 1500);
         newCourse2 = new Course("MATH 200", 8, 4, 5, days, 900);
+        assertEquals(newCourse.getDays(), days);
+        assertEquals(newCourse.getTime(), 1500);
+        assertEquals(newCourse.getName(), "CPSC 210");
     }
 
     @Test

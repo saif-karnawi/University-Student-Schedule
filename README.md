@@ -20,5 +20,5 @@ Additionally, students might also be interested in comparing the difficulties of
 - As a user, I want to be able to view my classes and their times.
 - As a user, I want to be able to input what I think the difficulty is for each course out of 5. 
 - As a user, I want to be able to see my term difficulty average out of 5.
-- As a user, I want to be able to input how many weekly hours each course requires. 
+- As a user, I want to be able to input how many minimum and maximum weekly hours each course requires. 
 - As a user, I want to be able to view the minimum and maximum amount of hours I will be studying every day or every month. 
