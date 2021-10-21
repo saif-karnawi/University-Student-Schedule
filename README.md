@@ -22,5 +22,7 @@ Additionally, students might also be interested in comparing the difficulties of
 - As a user, I want to be able to see my term difficulty average out of 5.
 - As a user, I want to be able to input how many minimum and maximum weekly hours each course requires. 
 - As a user, I want to be able to view the minimum and maximum amount of hours I will be studying every day or every month.
+
+## User Stories for Phase 2
 - As a user, I want to be able to save my info / entry after the information is displayed to me.
-- As a user, I want to be able to load up previous entries from myself and other users. 
+- As a user, I want to be able to load up the most previous entry. 

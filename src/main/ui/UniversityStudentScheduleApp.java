@@ -2,19 +2,39 @@ package ui;
 
 
 import model.Course;
+import model.EntryLine;
 import model.TermCourses;
+import model.UserEntry;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
+
+//------Please note, class includes code that it modeled after/ copied from JsonSerializationDemo
+// as shared on edx Phase 2 page. Github URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo -----
 
 //University Student Schedule app! this class contains the user interface methods.
 public class UniversityStudentScheduleApp {
 
+    private UserEntry userEntry;
     private Scanner scanner = new Scanner(System.in);
     TermCourses termOne = new TermCourses();
 
+    //next three lines are copied code, please see citation at top of the class
+    private static final String JSON_STORE = "./data/UserEntry.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
+
     //EFFECTS: Runs the run application method and initiates a new LinkedList data
-    UniversityStudentScheduleApp() {
+    public UniversityStudentScheduleApp() {
+        userEntry = new UserEntry("most latest entry");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runApplication();
     }
 
@@ -42,10 +62,27 @@ public class UniversityStudentScheduleApp {
                 }
             }
             showResults();
+        } else if (decision.equalsIgnoreCase("load")) {
+            loadSavedEntry();
         } else {
             System.out.println("Selection not valid. Please refresh the program and try again.");
         }
 
+    }
+
+    public void loadSavedEntry() {
+        try {
+            userEntry = jsonReader.read();
+            System.out.println("Loaded " + userEntry.getName() + " from " + JSON_STORE + "\n");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+
+        List<EntryLine> thingies = userEntry.getLines();
+
+        for (EntryLine t : thingies) {
+            System.out.println(t.getLine());
+        }
     }
 
     //EFFECTS: Shows introduction to the program and gives two options to user
@@ -53,6 +90,7 @@ public class UniversityStudentScheduleApp {
         System.out.println("Welcome to University Student Schedule!");
         System.out.println("To add a course, type 'add'");
         System.out.println("To exit the program, type 'quit'");
+        System.out.println("To view the latest entry, please type 'load'");
     }
 
     //MODIFIES: this
@@ -109,25 +147,73 @@ public class UniversityStudentScheduleApp {
     //Effects: Shows the info of the courses and tells the user goodbye
     public void showResults() {
         int courseNumber = 0;
+
         System.out.println("\nCourse times:");
         for (Course nextCourse : termOne.getTermCourses()) {
             courseNumber += 1;
             System.out.println("Course " + courseNumber + ": " + nextCourse.getName());
             System.out.print("Time: ");
-            LinkedList<String> days = nextCourse.getDays();
-            for (String nextDay : days) {
-
-                String lastDay = nextCourse.getDays().getLast();
-                if (nextDay.equalsIgnoreCase(lastDay)) {
-                    System.out.print(nextDay);
-                } else {
-                    System.out.print(nextDay + ", ");
-                }
-            }
-            System.out.println(" at " + nextCourse.getTime());
+            String days = daysAsString(nextCourse);
+            System.out.print(days);
+            System.out.print(" at " + nextCourse.getTime() + "\n");
+            saveCourse(nextCourse, courseNumber, days);
         }
         System.out.println("\n\nApproximate term difficulty: " + (termOne.getTermDifficulty()));
         displayHourStats();
+        optionToSave();
+    }
+
+    public String daysAsString(Course course) {
+        String daysString = "";
+        LinkedList<String> days = course.getDays();
+        for (String nextDay : days) {
+
+            String lastDay = course.getDays().getLast();
+            if (nextDay.equalsIgnoreCase(lastDay)) {
+                daysString += nextDay;
+            } else {
+                daysString += nextDay + ", ";
+            }
+        }
+
+        return daysString;
+    }
+
+    public void optionToSave() {
+
+        System.out.println("\nWould you like to save this entry?");
+        String decision = scanner.nextLine();
+        if (decision.equalsIgnoreCase("yes")) {
+            saveTermStats();
+            try {
+                jsonWriter.open();
+                jsonWriter.write(userEntry);
+                jsonWriter.close();
+                System.out.println("Saved " + userEntry.getName() + " to " + JSON_STORE);
+            } catch (FileNotFoundException e) {
+                System.out.println("Unable to write to file: " + JSON_STORE);
+            }
+        } else {
+            System.out.println("Thanks for using our application! Goodbye.");
+        }
+
+    }
+
+    public void saveCourse(Course course, int courseNum, String days) {
+        userEntry.addLine(new EntryLine("Course " + courseNum + ": " + course.getName()));
+        userEntry.addLine(new EntryLine("Time: " + days + " at " + course.getTime()));
+    }
+
+    public void saveTermStats() {
+        userEntry.addLine(new EntryLine("\n\nApproximate term difficulty: " + (termOne.getTermDifficulty())));
+        userEntry.addLine(new EntryLine("The maximum daily hours you will be studying is approximately "
+                + termOne.getDailyMaxHours()));
+        userEntry.addLine(new EntryLine("The maximum monthly hours you will be studying is approximately "
+                + termOne.getMonthlyMaxHours()));
+        userEntry.addLine(new EntryLine("The minimum daily hours you will be studying is approximately "
+                + termOne.getDailyMinHours()));
+        userEntry.addLine(new EntryLine("The minimum monthly hours you will be studying is approximately "
+                + termOne.getMonthlyMinHours()));
     }
 
     //EFFECTS: shows the user the info regarding study hours

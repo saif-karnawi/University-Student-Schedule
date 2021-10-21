@@ -1,0 +1,14 @@
+{
+    "name": "most latest entry",
+    "lines": [
+        {"line": "Course 1: CPSC 210"},
+        {"line": "Time: Mon, Wed, Fri at 1500"},
+        {"line": "Course 2: math 200"},
+        {"line": "Time: tues at 900"},
+        {"line": "\n\nApproximate term difficulty: 4"},
+        {"line": "The maximum daily hours you will be studying is approximately 2"},
+        {"line": "The maximum monthly hours you will be studying is approximately 60"},
+        {"line": "The minimum daily hours you will be studying is approximately 1"},
+        {"line": "The minimum monthly hours you will be studying is approximately 28"}
+    ]
+}
