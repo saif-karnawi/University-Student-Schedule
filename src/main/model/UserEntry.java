@@ -11,6 +11,7 @@ import java.util.List;
 //------Please note, class includes code that it modeled after/ copied from JsonSerializationDemo
 // as shared on edx Phase 2 page. Github URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo -----
 
+//Represents one user entry. Each user entry has a list of type Entryline that includes all the lines in it.
 public class UserEntry implements Writeable {
 
     private String name;
@@ -27,12 +28,12 @@ public class UserEntry implements Writeable {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds thingy to this workroom
+    // EFFECTS: adds line to this to userEntry
     public void addLine(EntryLine line) {
         lines.add(line);
     }
 
-    // EFFECTS: returns an unmodifiable list of thingies in this workroom
+    // EFFECTS: returns an unmodifiable list of lines in this userEntry
     public List<EntryLine> getLines() {
         return Collections.unmodifiableList(lines);
     }
@@ -42,6 +43,7 @@ public class UserEntry implements Writeable {
         return lines.size();
     }
 
+    //EFFECTS: returns userEntry as a json
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

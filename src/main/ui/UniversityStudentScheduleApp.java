@@ -24,7 +24,6 @@ public class UniversityStudentScheduleApp {
     private Scanner scanner = new Scanner(System.in);
     TermCourses termOne = new TermCourses();
 
-    //next three lines are copied code, please see citation at top of the class
     private static final String JSON_STORE = "./data/UserEntry.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -70,6 +69,8 @@ public class UniversityStudentScheduleApp {
 
     }
 
+    //MODIFIES: this.
+    //EFFECTS: loads userEntry from file
     public void loadSavedEntry() {
         try {
             userEntry = jsonReader.read();
@@ -128,9 +129,10 @@ public class UniversityStudentScheduleApp {
         boolean anotherDay = true;
         String day;
         String decision;
+        System.out.println("What days do you have this course?");
 
         while (anotherDay) {
-            System.out.println("What days do you have this course? If there are multiple, enter the first day only");
+            System.out.println("Enter one day only:");
             day = scanner.nextLine();
             days.add(day);
             System.out.println("Do you have this course another day? Type either 'yes' or anything else for no");
@@ -163,6 +165,7 @@ public class UniversityStudentScheduleApp {
         optionToSave();
     }
 
+    //EFFECTS: returns the days user has class in a form of a string
     public String daysAsString(Course course) {
         String daysString = "";
         LinkedList<String> days = course.getDays();
@@ -179,6 +182,8 @@ public class UniversityStudentScheduleApp {
         return daysString;
     }
 
+    //EFFECTS: gives the option to save, and if the user wants to save, it saves the userEntry to file.
+    // otherwise tells the user goodbye.
     public void optionToSave() {
 
         System.out.println("\nWould you like to save this entry?");
@@ -199,11 +204,15 @@ public class UniversityStudentScheduleApp {
 
     }
 
+    //MODIFIES: this.
+    //EFFECTS: adds the lines that are related to a specific course to userEntry
     public void saveCourse(Course course, int courseNum, String days) {
         userEntry.addLine(new EntryLine("Course " + courseNum + ": " + course.getName()));
         userEntry.addLine(new EntryLine("Time: " + days + " at " + course.getTime()));
     }
 
+    //MODIFIES: this.
+    //EFFECTS: adds the term difficulty and max / min monthly and daily hour lines to userEntry
     public void saveTermStats() {
         userEntry.addLine(new EntryLine("\n\nApproximate term difficulty: " + (termOne.getTermDifficulty())));
         userEntry.addLine(new EntryLine("The maximum daily hours you will be studying is approximately "
