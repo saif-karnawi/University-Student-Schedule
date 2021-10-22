@@ -38,8 +38,8 @@ public class UserEntry implements Writeable {
         return Collections.unmodifiableList(lines);
     }
 
-    // EFFECTS: returns number of thingies in this workroom
-    public int numThingies() {
+    // EFFECTS: returns number of lines in this userEntry
+    public int numLines() {
         return lines.size();
     }
 
@@ -52,7 +52,7 @@ public class UserEntry implements Writeable {
         return json;
     }
 
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns lines in this userEntry as a JSON array
     private JSONArray linesToJson() {
         JSONArray jsonArray = new JSONArray();
 

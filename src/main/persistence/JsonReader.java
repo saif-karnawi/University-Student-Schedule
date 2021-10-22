@@ -46,26 +46,26 @@ public class JsonReader {
     // EFFECTS: parses workroom from JSON object and returns it
     private UserEntry parseUserEntry(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
-        UserEntry wr = new UserEntry(name);
-        addThingies(wr, jsonObject);
-        return wr;
+        UserEntry userEntry = new UserEntry(name);
+        addThingies(userEntry, jsonObject);
+        return userEntry;
     }
 
-    // MODIFIES: wr
+    // MODIFIES: userEntry
     // EFFECTS: parses thingies from JSON object and adds them to workroom
-    private void addThingies(UserEntry wr, JSONObject jsonObject) {
+    private void addThingies(UserEntry userEntry, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("lines");
         for (Object json : jsonArray) {
-            JSONObject nextThingy = (JSONObject) json;
-            addThingy(wr, nextThingy);
+            JSONObject nextLine = (JSONObject) json;
+            addThingy(userEntry, nextLine);
         }
     }
 
-    // MODIFIES: wr
+    // MODIFIES: userEntry
     // EFFECTS: parses thingy from JSON object and adds it to workroom
-    private void addThingy(UserEntry wr, JSONObject jsonObject) {
+    private void addThingy(UserEntry userEntry, JSONObject jsonObject) {
         String name = jsonObject.getString("line");
         EntryLine line = new EntryLine(name);
-        wr.addLine(line);
+        userEntry.addLine(line);
     }
 }

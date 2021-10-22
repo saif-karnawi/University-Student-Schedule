@@ -79,9 +79,9 @@ public class UniversityStudentScheduleApp {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
 
-        List<EntryLine> thingies = userEntry.getLines();
+        List<EntryLine> lines = userEntry.getLines();
 
-        for (EntryLine t : thingies) {
+        for (EntryLine t : lines) {
             System.out.println(t.getLine());
         }
     }
@@ -195,6 +195,7 @@ public class UniversityStudentScheduleApp {
                 jsonWriter.write(userEntry);
                 jsonWriter.close();
                 System.out.println("Saved " + userEntry.getName() + " to " + JSON_STORE);
+                System.out.println("Thanks for using our application! Goodbye.");
             } catch (FileNotFoundException e) {
                 System.out.println("Unable to write to file: " + JSON_STORE);
             }
