@@ -1,9 +1,11 @@
 package model;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,10 +14,22 @@ import static org.junit.jupiter.api.Assertions.*;
 //In addition, the JSON files in data folder used are also modeled after those from the program mentioned above.
 
 class JsonWriterTest {
+
+    Course course;
+    Course course2;
+
+    @BeforeEach
+    void runBefore(){
+        LinkedList<String> days = new LinkedList<String>();
+        days.add("Thursday");
+        days.add("Tuesday");
+        course = new Course("CPSC 210", 7, 3, 3, days, 1500);
+        course2 = new Course("ATSC 113", 8, 4, 5, days, 1500);
+    }
     @Test
     void testWriterInvalidFile() {
         try {
-            UserEntry userEntry = new UserEntry("My work room");
+
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -25,49 +39,44 @@ class JsonWriterTest {
     }
 
     @Test
-    void testWriterEmptyUserEntry() {
+    void testWriterEmptyTermCourses() {
         try {
-            UserEntry userEntry = new UserEntry("Entry 123");
+            TermCourses termOne = new TermCourses("Winter Term");
             JsonWriter writer = new JsonWriter("./data/testWriterEmptyUserEntry.json");
             writer.open();
-            writer.write(userEntry);
+            writer.write(termOne);
             writer.close();
 
             JsonReader reader = new JsonReader("./data/testWriterEmptyUserEntry.json");
-            userEntry = reader.read();
-            assertEquals("Entry 123", userEntry.getName());
-            assertEquals(0, userEntry.numLines());
+            termOne = reader.read();
+            assertEquals("Winter Term", termOne.getName());
+            assertEquals(0, termOne.getTermCourses().size());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
     }
 
     @Test
-    void testWriterGeneralUserEntry() {
+    void testWriterGeneralTermCourses() {
         try {
-            UserEntry userEntry = new UserEntry("Entry 123");
-            userEntry.addLine(new EntryLine("First Line"));
-            userEntry.addLine(new EntryLine("Second Line"));
+            TermCourses termOne = new TermCourses("Winter Term");
             JsonWriter writer = new JsonWriter("./data/testWriterGeneralUserEntry.json");
+            termOne.addCourse(course);
+            termOne.addCourse(course2);
             writer.open();
-            writer.write(userEntry);
+            writer.write(termOne);
             writer.close();
 
             JsonReader reader = new JsonReader("./data/testWriterGeneralUserEntry.json");
-            userEntry = reader.read();
-            assertEquals("Entry 123", userEntry.getName());
-            List<EntryLine> lines = userEntry.getLines();
+            termOne = reader.read();
+            assertEquals("Winter Term", termOne.getName());
+            List<Course> lines = termOne.getTermCourses();
             assertEquals(2, lines.size());
-            checkLine("First Line" , lines.get(0));
-            checkLine("Second Line" , lines.get(1));
+
 
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
     }
 
-    protected void checkLine(String name, EntryLine line) {
-        assertEquals(name, line.getLine());
-
-    }
 }

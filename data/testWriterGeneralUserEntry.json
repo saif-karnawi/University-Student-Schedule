@@ -1,7 +1,19 @@
 {
-    "name": "Entry 123",
-    "lines": [
-        {"line": "First Line"},
-        {"line": "Second Line"}
-    ]
+    "courses": [
+        {
+            "maxWeekly": 7,
+            "difficulty": 3,
+            "courseName": "CPSC 210",
+            "minWeekly": 3,
+            "time": 1500
+        },
+        {
+            "maxWeekly": 8,
+            "difficulty": 5,
+            "courseName": "ATSC 113",
+            "minWeekly": 4,
+            "time": 1500
+        }
+    ],
+    "name": "Winter Term"
 }

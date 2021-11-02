@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.util.LinkedList;
 
 //Each course object has a name, maximum and minimum weekly hours, difficulty out of 5,
@@ -50,6 +52,18 @@ public class Course {
 
     public LinkedList<String> getDays() {
         return days;
+    }
+
+    public JSONObject toJson() {
+
+        JSONObject json = new JSONObject();
+        json.put("courseName", getName());
+        json.put("maxWeekly", getMaxWeeklyHours());
+        json.put("minWeekly", getMinWeeklyHours());
+        json.put("difficulty", getCourseDifficulty());
+        json.put("time", getTime());
+
+        return json;
     }
 
 }

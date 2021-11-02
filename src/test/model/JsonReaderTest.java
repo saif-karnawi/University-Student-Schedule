@@ -1,8 +1,10 @@
 package model;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.JsonReader;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,11 +15,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JsonReaderTest {
 
+    Course course;
+    Course course2;
+    TermCourses termCourses;
+    @BeforeEach
+    void runBefore(){
+        LinkedList<String> days = new LinkedList<String>();
+        days.add("Thursday");
+        days.add("Tuesday");
+        course = new Course("CPSC 210", 7, 3, 3, days, 1500);
+        course2 = new Course("ATSC 113", 8, 4, 5, days, 1500);
+        termCourses = new TermCourses("Term");
+    }
+
     @Test
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            UserEntry userEntry = reader.read();
+            TermCourses termCourses = reader.read();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -25,36 +40,35 @@ class JsonReaderTest {
     }
 
     @Test
-    void testReaderEmptyUserEntry() {
+    void testReaderEmptyTermCourses() {
         JsonReader reader = new JsonReader("./data/testReaderEmptyUserEntry.json");
         try {
-            UserEntry userEntry = reader.read();
-            assertEquals("My work room", userEntry.getName());
-            assertEquals(0, userEntry.numLines());
+            TermCourses termCourses = reader.read();
+            assertEquals("My work room", termCourses.getName());
+            assertEquals(0, termCourses.getTermCourses().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
     }
 
     @Test
-    void testReaderGeneralUserEntry() {
+    void testReaderGeneralTermCourses() {
         JsonReader reader = new JsonReader("./data/testReaderGeneralUserEntry.json");
         try {
-            UserEntry userEntry = reader.read();
-            assertEquals("Entry 123", userEntry.getName());
-            List<EntryLine> lines = userEntry.getLines();
+
+            termCourses.addCourse(course);
+            termCourses.addCourse(course2);
+            TermCourses termCourses = reader.read();
+            assertEquals("Term", termCourses.getName());
+            List<Course> lines = termCourses.getTermCourses();
             assertEquals(2, lines.size());
-            checkLine("First Line",lines.get(0));
-            checkLine("Second Line",lines.get(1));
+
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
     }
 
-    protected void checkLine(String name, EntryLine line) {
-        assertEquals(name, line.getLine());
 
-    }
 
 }
 

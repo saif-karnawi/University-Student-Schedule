@@ -1,6 +1,6 @@
 package persistence;
 
-import model.UserEntry;
+import model.TermCourses;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -30,9 +30,9 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of workroom to file
-    public void write(UserEntry userEntry) {
-        JSONObject json = userEntry.toJson();
+    // EFFECTS: writes JSON representation of termCourses to file
+    public void write(TermCourses term) {
+        JSONObject json = term.toJson();
         saveToFile(json.toString(TAB));
     }
 

@@ -2,16 +2,13 @@ package ui;
 
 
 import model.Course;
-import model.EntryLine;
 import model.TermCourses;
-import model.UserEntry;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 //------Please note, class includes code that it modeled after/ copied from JsonSerializationDemo
@@ -20,18 +17,17 @@ import java.util.Scanner;
 //University Student Schedule app! this class contains the user interface methods.
 public class UniversityStudentScheduleApp {
 
-    private UserEntry userEntry;
     private Scanner scanner = new Scanner(System.in);
-    TermCourses termOne = new TermCourses();
+    TermCourses termOne = new TermCourses("Term");
 
-    private static final String JSON_STORE = "./data/UserEntry.json";
+    private static final String JSON_STORE = "./data/TermCourses.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
 
     //EFFECTS: Runs the run application method and initiates a new LinkedList data
     public UniversityStudentScheduleApp() {
-        userEntry = new UserEntry("most latest entry");
+
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         runApplication();
@@ -73,17 +69,13 @@ public class UniversityStudentScheduleApp {
     //EFFECTS: loads userEntry from file
     public void loadSavedEntry() {
         try {
-            userEntry = jsonReader.read();
-            System.out.println("Loaded " + userEntry.getName() + " from " + JSON_STORE + "\n");
+            termOne = jsonReader.read();
+            System.out.println("Loaded " + termOne.getName() + " from " + JSON_STORE + "\n");
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
 
-        List<EntryLine> lines = userEntry.getLines();
-
-        for (EntryLine t : lines) {
-            System.out.println(t.getLine());
-        }
+        showResults();
     }
 
     //EFFECTS: Shows introduction to the program and gives two options to user
@@ -158,7 +150,7 @@ public class UniversityStudentScheduleApp {
             String days = daysAsString(nextCourse);
             System.out.print(days);
             System.out.print(" at " + nextCourse.getTime() + "\n");
-            saveCourse(nextCourse, courseNumber, days);
+            //saveCourse(nextCourse, courseNumber, days);
         }
         System.out.println("\n\nApproximate term difficulty: " + (termOne.getTermDifficulty()));
         displayHourStats();
@@ -189,12 +181,12 @@ public class UniversityStudentScheduleApp {
         System.out.println("\nWould you like to save this entry?");
         String decision = scanner.nextLine();
         if (decision.equalsIgnoreCase("yes")) {
-            saveTermStats();
+
             try {
                 jsonWriter.open();
-                jsonWriter.write(userEntry);
+                jsonWriter.write(termOne);
                 jsonWriter.close();
-                System.out.println("Saved " + userEntry.getName() + " to " + JSON_STORE);
+                System.out.println("Saved " + termOne.getName() + " to " + JSON_STORE);
                 System.out.println("Thanks for using our application! Goodbye.");
             } catch (FileNotFoundException e) {
                 System.out.println("Unable to write to file: " + JSON_STORE);
@@ -203,27 +195,6 @@ public class UniversityStudentScheduleApp {
             System.out.println("Thanks for using our application! Goodbye.");
         }
 
-    }
-
-    //MODIFIES: this.
-    //EFFECTS: adds the lines that are related to a specific course to userEntry
-    public void saveCourse(Course course, int courseNum, String days) {
-        userEntry.addLine(new EntryLine("Course " + courseNum + ": " + course.getName()));
-        userEntry.addLine(new EntryLine("Time: " + days + " at " + course.getTime()));
-    }
-
-    //MODIFIES: this.
-    //EFFECTS: adds the term difficulty and max / min monthly and daily hour lines to userEntry
-    public void saveTermStats() {
-        userEntry.addLine(new EntryLine("\n\nApproximate term difficulty: " + (termOne.getTermDifficulty())));
-        userEntry.addLine(new EntryLine("The maximum daily hours you will be studying is approximately "
-                + termOne.getDailyMaxHours()));
-        userEntry.addLine(new EntryLine("The maximum monthly hours you will be studying is approximately "
-                + termOne.getMonthlyMaxHours()));
-        userEntry.addLine(new EntryLine("The minimum daily hours you will be studying is approximately "
-                + termOne.getDailyMinHours()));
-        userEntry.addLine(new EntryLine("The minimum monthly hours you will be studying is approximately "
-                + termOne.getMonthlyMinHours()));
     }
 
     //EFFECTS: shows the user the info regarding study hours

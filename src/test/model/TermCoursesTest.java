@@ -16,7 +16,7 @@ class TermCoursesTest {
 
     @BeforeEach
     public void runBefore() {
-        termOne = new TermCourses();
+        termOne = new TermCourses("Winter Term");
 
         LinkedList<String> days = new LinkedList<String>();
         days.add("Thursday");
@@ -111,6 +111,25 @@ class TermCoursesTest {
         testList.add(newCourse2);
 
         assertEquals(testList, termOne.getTermCourses());
+    }
+
+    @Test
+    void testGetName(){
+        assertEquals("Winter Term" , termOne.getName());
+    }
+
+
+    @Test
+    void testNumCourses () {
+        assertEquals(0, termOne.getTermCourses().size());
+        termOne.addCourse(newCourse);
+        assertEquals(1, termOne.getTermCourses().size());
+    }
+
+    @Test
+    void testToJson () {
+        assertTrue(termOne.toJson().has("name"));
+        assertTrue(termOne.toJson().has("courses"));
     }
 
 }

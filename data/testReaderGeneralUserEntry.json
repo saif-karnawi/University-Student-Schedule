@@ -1,11 +1,19 @@
 {
-    "lines": [
-        {
-            "line": "First Line"
-        },
-        {
-            "line": "Second Line"
-        }
-    ],
-    "name": "Entry 123"
+  "courses": [
+    {
+      "maxWeekly": 8,
+      "difficulty": 5,
+      "courseName": "CPSC 213",
+      "minWeekly": 4,
+      "time": 900
+    },
+    {
+      "maxWeekly": 7,
+      "difficulty": 3,
+      "courseName": "cpsc 221",
+      "minWeekly": 3,
+      "time": 1800
+    }
+  ],
+  "name": "Term"
 }

@@ -1,15 +1,21 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writeable;
+
 import java.util.LinkedList;
 
 // Represents a LinkedList of type Course, for all the courses the user adds
-public class TermCourses {
+public class TermCourses implements Writeable {
 
     LinkedList<Course> data;
+    String name;
 
     //EFFECTS: Instantiates a new LinkedList called data
-    public TermCourses() {
+    public TermCourses(String name) {
         data = new LinkedList<Course>();
+        this.name = name;
     }
 
     public LinkedList<Course> getTermCourses() {
@@ -51,6 +57,10 @@ public class TermCourses {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
     //EFFECTS: returns the approximate monthly maximum hours
     public int getMonthlyMaxHours() {
 
@@ -85,5 +95,21 @@ public class TermCourses {
         return difficultyAverage;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("courses", coursesToJson());
+        return json;
+    }
 
+    private JSONArray coursesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Course t : data) {
+            jsonArray.put(t.toJson());
+        }
+
+        return jsonArray;
+    }
 }

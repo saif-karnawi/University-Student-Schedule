@@ -1,7 +1,7 @@
 package persistence;
 
-import model.EntryLine;
-import model.UserEntry;
+import model.Course;
+import model.TermCourses;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.stream.Stream;
 
 //------Please note, class includes code that it modeled after/ copied from JsonSerializationDemo
@@ -26,10 +27,10 @@ public class JsonReader {
 
     // EFFECTS: reads workroom from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public UserEntry read() throws IOException {
+    public TermCourses read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseUserEntry(jsonObject);
+        return parseTermCourses(jsonObject);
     }
 
     // EFFECTS: reads source file as string and returns it
@@ -43,29 +44,33 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses workroom from JSON object and returns it
-    private UserEntry parseUserEntry(JSONObject jsonObject) {
+    // EFFECTS: parses termCourses from JSON object and returns it
+    private TermCourses parseTermCourses(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
-        UserEntry userEntry = new UserEntry(name);
-        addThingies(userEntry, jsonObject);
-        return userEntry;
+        TermCourses termCourses = new TermCourses(name);
+        addCourses(termCourses, jsonObject);
+        return termCourses;
     }
 
-    // MODIFIES: userEntry
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
-    private void addThingies(UserEntry userEntry, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("lines");
+    // MODIFIES: termOne
+    // EFFECTS: parses courses from JSON object and adds them to termCourses
+    private void addCourses(TermCourses termOne, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("courses");
         for (Object json : jsonArray) {
             JSONObject nextLine = (JSONObject) json;
-            addThingy(userEntry, nextLine);
+            addCourse(termOne, nextLine);
         }
     }
 
-    // MODIFIES: userEntry
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
-    private void addThingy(UserEntry userEntry, JSONObject jsonObject) {
-        String name = jsonObject.getString("line");
-        EntryLine line = new EntryLine(name);
-        userEntry.addLine(line);
+    // MODIFIES: termOne
+    // EFFECTS: parses course from JSON object and adds it to termCourses
+    private void addCourse(TermCourses termOne, JSONObject jsonObject) {
+        String name = jsonObject.getString("courseName");
+        LinkedList<String> days = new LinkedList<String>();
+        days.add("Thursday");
+        days.add("Tuesday");
+        Course course = new Course(name, 7, 3,
+                    3, days, 1500);
+        termOne.addCourse(course);
     }
 }
