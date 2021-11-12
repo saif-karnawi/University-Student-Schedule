@@ -18,6 +18,14 @@ public class TermCourses implements Writeable {
         this.name = name;
     }
 
+    public void remove(Course course) {
+        for (Course next : data) {
+            if (course.getName() == next.getName()) {
+                data.remove(next);
+            }
+        }
+    }
+
     public LinkedList<Course> getTermCourses() {
         return data;
     }
