@@ -2,6 +2,8 @@ package ui;
 
 import model.Course;
 import model.TermCourses;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import javax.swing.*;
 
@@ -9,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 
 //Represents a graphical user interface of the program
@@ -24,10 +28,16 @@ public class AppGUI extends JFrame implements ActionListener {
     JLabel label5;
     JLabel label6;
     JLabel label7;
-
+    JLabel picture;
 
     JFrame frame;
     JPanel coursesAddedPanel;
+    JPanel picturePanel;
+    JMenuBar menuBar;
+    JMenu file;
+    JMenuItem load;
+    JMenuItem save;
+    JMenuItem quit;
 
     JTextField courseName;
     JTextField difficulty;
@@ -65,8 +75,28 @@ public class AppGUI extends JFrame implements ActionListener {
         time();
         buttons();
         output();
+        jmenu();
         frame.setVisible(true);
 
+    }
+
+    public void jmenu() {
+        menuBar = new JMenuBar();
+        file = new JMenu("File");
+        load = new JMenuItem("Load");
+        save = new JMenuItem("Save");
+        quit = new JMenuItem("Quit");
+
+        load.addActionListener(this);
+        save.addActionListener(this);
+        quit.addActionListener(this);
+
+        file.add(load);
+        file.add(save);
+        file.add(quit);
+        menuBar.add(file);
+
+        frame.setJMenuBar(menuBar);
     }
 
     public void output() {
@@ -203,12 +233,85 @@ public class AppGUI extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == showResultsButton) {
-            showResultsButtonClicked();
+            showResults();
+            picturePanel.remove(picture);
+            picturePanel.updateUI();
         }
 
         if (e.getSource() == removeSelectedButton) {
             removeSelectedButtonClicked();
         }
+
+        if (e.getSource() == quit) {
+            System.exit(0);
+        }
+
+        if (e.getSource() == load) {
+            loadClicked();
+        }
+
+        if (e.getSource() == save) {
+            saveClicked();
+        }
+    }
+
+    public void saveClicked() {
+
+        final String JSON_STORE = "./data/TermCourses.json";
+        JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
+
+        try {
+            jsonWriter.open();
+            jsonWriter.write(term);
+            jsonWriter.close();
+            System.out.println("Saved " + term.getName() + " to " + JSON_STORE);
+            System.out.println("Thanks for using our application! Goodbye.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+
+        JOptionPane.showMessageDialog(null, "Entry Saved!", "Saved", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    public void loadClicked() {
+        if (checkBoxes.size() != 0) {
+            JOptionPane.showMessageDialog(null, "Cannot load entry since you have courses added.",
+                    "Error", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            loadEntry();
+            addCourseButton.setVisible(false);
+            showResultsButton.setVisible(false);
+            removeSelectedButton.setVisible(false);
+        }
+
+    }
+
+    public void loadEntry() {
+        final String JSON_STORE = "./data/TermCourses.json";
+        JsonReader jsonReader = new JsonReader(JSON_STORE);
+
+        try {
+            term = jsonReader.read();
+            System.out.println("Loaded " + term.getName() + " from " + JSON_STORE + "\n");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+
+        showResults();
+        picture = new JLabel();
+        ImageIcon imageIcon = new ImageIcon("./data/check.png");
+        Image image = imageIcon.getImage();
+        Image resized = image.getScaledInstance(50,50, Image.SCALE_SMOOTH);
+        ImageIcon iconResized = new ImageIcon(resized);
+
+        picture.setIcon(iconResized);
+
+        picturePanel = new JPanel();
+        picturePanel.setBounds(505,400,50,50);
+        picturePanel.add(picture);
+
+        frame.add(picturePanel);
+        picturePanel.updateUI();
     }
 
     public void addCourseButtonClicked() {
@@ -261,50 +364,29 @@ public class AppGUI extends JFrame implements ActionListener {
         term.addCourse(course);
     }
 
-    public void showResultsButtonClicked() {
-        int courseNumber = 0;
+    public void showResults() {
 
-        System.out.println("\nCourse times:");
+        output.setText("Loaded Entry");
+        output.setText(output.getText() + "\n\nCourses: ");
         for (Course nextCourse : term.getTermCourses()) {
-            courseNumber += 1;
-            System.out.println("Course " + courseNumber + ": " + nextCourse.getName());
-            System.out.print("Time: ");
-            String days = daysAsString(nextCourse);
-            System.out.print(days);
-            System.out.print(" at " + nextCourse.getTime() + "\n");
-            //saveCourse(nextCourse, courseNumber, days);
-        }
-        System.out.println("\n\nApproximate term difficulty: " + (term.getTermDifficulty()));
-        displayHourStats();
-        //optionToSave();
-    }
 
-    public String daysAsString(Course course) {
-        String daysString = "";
-        LinkedList<String> days = course.getDays();
-        for (String nextDay : days) {
-
-            String lastDay = course.getDays().getLast();
-            if (nextDay.equalsIgnoreCase(lastDay)) {
-                daysString += nextDay;
+            if (nextCourse.getName().equalsIgnoreCase(term.getTermCourses().getLast().getName())) {
+                output.setText(output.getText() + " and " + nextCourse.getName());
             } else {
-                daysString += nextDay + ", ";
+                output.setText(output.getText() + nextCourse.getName() + ", ");
             }
+
         }
-
-        return daysString;
-    }
-
-    public void displayHourStats() {
-
-        System.out.println("The maximum daily hours you will be studying is approximately "
+        output.setText(output.getText() + "\nApproximate term difficulty: " + (term.getTermDifficulty()));
+        output.setText(output.getText() + "\nThe maximum daily hours you will be studying is approximately "
                 + term.getDailyMaxHours());
-        System.out.println("The maximum monthly hours you will be studying is approximately "
+        output.setText(output.getText() + "\nThe maximum monthly hours you will be studying is approximately "
                 + term.getMonthlyMaxHours());
-        System.out.println("The minimum daily hours you will be studying is approximately "
+        output.setText(output.getText() + "\nThe minimum daily hours you will be studying is approximately "
                 + term.getDailyMinHours());
-        System.out.println("The minimum monthly hours you will be studying is approximately "
+        output.setText(output.getText() + "\nThe minimum monthly hours you will be studying is approximately "
                 + term.getMonthlyMinHours());
+        output.setText(output.getText() + "\n\nPlease restart the application to make your own entry");
     }
 
     public void removeSelectedButtonClicked() {
@@ -312,14 +394,17 @@ public class AppGUI extends JFrame implements ActionListener {
             if (nextCheckBox.isSelected()) {
                 String name = nextCheckBox.getText();
                 for (Course nextCourse : term.getTermCourses()) {
-                    if (name == nextCourse.getName()) {
+                    if (name.equalsIgnoreCase(nextCourse.getName())) {
                         term.remove(nextCourse);
                         coursesAddedPanel.remove(nextCheckBox);
                         coursesAddedPanel.updateUI();
+                        checkBoxes.remove(nextCheckBox);
                     }
                 }
             }
         }
     }
+
+
 
 }
