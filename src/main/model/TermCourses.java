@@ -96,7 +96,7 @@ public class TermCourses implements Writeable {
         int difficultyAverage = 0;
 
         for (Course nextCourse: data) {
-            sumOfDifficulties += nextCourse.getCourseDifficulty();
+            sumOfDifficulties = sumOfDifficulties + nextCourse.getCourseDifficulty();
         }
 
         difficultyAverage = sumOfDifficulties / getTermCourses().size();

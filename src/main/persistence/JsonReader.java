@@ -66,11 +66,20 @@ public class JsonReader {
     // EFFECTS: parses course from JSON object and adds it to termCourses
     private void addCourse(TermCourses termOne, JSONObject jsonObject) {
         String name = jsonObject.getString("courseName");
+        int max = jsonObject.getInt("maxWeekly");
+        int min = jsonObject.getInt("minWeekly");
+        int time = jsonObject.getInt("time");
+        int difficulty = jsonObject.getInt("difficulty");
+
         LinkedList<String> days = new LinkedList<String>();
-        days.add("Thursday");
-        days.add("Tuesday");
-        Course course = new Course(name, 7, 3,
-                    3, days, 1500);
+        int dayCounter = jsonObject.getInt("dayCounter");
+
+        for (int i = 0; i < dayCounter; i++) {
+            days.add(jsonObject.getString("day" + (i + 1)));
+        }
+
+        Course course = new Course(name, max, min,
+                    difficulty, days, time);
         termOne.addCourse(course);
     }
 }

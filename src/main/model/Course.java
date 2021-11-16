@@ -63,6 +63,14 @@ public class Course {
         json.put("difficulty", getCourseDifficulty());
         json.put("time", getTime());
 
+        int dayCounter = 0;
+        for (String day : days) {
+            dayCounter += 1;
+            json.put("day" + dayCounter, day);
+        }
+
+        json.put("dayCounter", dayCounter);
+
         return json;
     }
 

@@ -58,7 +58,8 @@ public class AppGUI extends JFrame implements ActionListener {
     JTextArea output;
 
 
-    // Constructs the window, its size, location, and title
+    //EFFECTS: Constructs the window, its size, location, and title. Also calls helper methods.
+    //Modifies: this
     public AppGUI() {
         checkBoxes = new LinkedList<>();
         term = new TermCourses("Term");
@@ -80,6 +81,8 @@ public class AppGUI extends JFrame implements ActionListener {
 
     }
 
+    //EFFECTS: Initiates the menue
+    //Modifies: this
     public void jmenu() {
         menuBar = new JMenuBar();
         file = new JMenu("File");
@@ -99,6 +102,8 @@ public class AppGUI extends JFrame implements ActionListener {
         frame.setJMenuBar(menuBar);
     }
 
+    //EFFECTS: Initiates the output box
+    //MODIFIES: this
     public void output() {
         output = new JTextArea();
         output.setBounds(25,250,460,200);
@@ -106,6 +111,8 @@ public class AppGUI extends JFrame implements ActionListener {
         frame.add(output);
     }
 
+    //EFFECTS: Initiates the window
+    //MOIFIES: this
     public void initiateWindow() {
         frame.setTitle("University Student Schedule");
         frame.setSize(810, 540);
@@ -116,6 +123,8 @@ public class AppGUI extends JFrame implements ActionListener {
 
     }
 
+    //EFFECTS: Initiates the course name label and it's textField
+    //MOIFIES: this
     public void courseName() {
         label1 = new JLabel("Course Name: ");
         label1.setBounds(25,25,100,25);
@@ -127,6 +136,8 @@ public class AppGUI extends JFrame implements ActionListener {
         frame.add(courseName);
     }
 
+    //EFFECTS: Initiates the difficulty lable and it's textfield
+    //MOIFIES: this
     public void difficulty() {
         label3 = new JLabel("Difficulty (1-5):");
         label3.setBounds(250,25,100, 25);
@@ -138,6 +149,8 @@ public class AppGUI extends JFrame implements ActionListener {
         frame.add(difficulty);
     }
 
+    //EFFECTS: Inititates the max and min lables and their textfields
+    //MOIFIES: this
     public void minAndMaxHours() {
         label4 = new JLabel("Minimum Weekly Hours:");
         label4.setBounds(25,70,200, 25);
@@ -158,6 +171,8 @@ public class AppGUI extends JFrame implements ActionListener {
         frame.add(maxHours);
     }
 
+    //EFFECTS: Initiates a jpane that will include all the courses added
+    //MOIFIES: this
     public void myJPane() {
         label2 = new JLabel("Courses Added:");
         label2.setBounds(575,25,100, 25);
@@ -169,6 +184,8 @@ public class AppGUI extends JFrame implements ActionListener {
 
     }
 
+    //EFFECTS: Initiates the dats label and it's textfield
+    //MOIFIES: this
     public void days() {
         label6 = new JLabel("Days:");
         label6.setBounds(25,115,200, 25);
@@ -194,6 +211,8 @@ public class AppGUI extends JFrame implements ActionListener {
 
     }
 
+    //EFFECTS: Initiates the time label and it's textField
+    //MOIFIES: this
     public void time() {
         label7 = new JLabel("Class Time:");
         label7.setBounds(25,160,100, 25);
@@ -209,6 +228,8 @@ public class AppGUI extends JFrame implements ActionListener {
         frame.add(label7);
     }
 
+    //EFFECTS: Initiates the three buttons to add a course, remove a course, or show results
+    //MOIFIES: this
     public void buttons() {
         addCourseButton = new JButton("Add Course");
         addCourseButton.setBounds(25,205,150,25);
@@ -226,6 +247,7 @@ public class AppGUI extends JFrame implements ActionListener {
         showResultsButton.addActionListener(this);
     }
 
+    //Event listener
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addCourseButton) {
@@ -255,6 +277,9 @@ public class AppGUI extends JFrame implements ActionListener {
         }
     }
 
+
+    //EFFECTS: writes the json file and tells the user that progress is saved
+    //MODIFIES: this
     public void saveClicked() {
 
         final String JSON_STORE = "./data/TermCourses.json";
@@ -273,6 +298,9 @@ public class AppGUI extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(null, "Entry Saved!", "Saved", JOptionPane.PLAIN_MESSAGE);
     }
 
+    //EFFECTS: Checks if any courses are added. If there are any, tells the user they cannot load entry.
+    //If there are not any, hides the buttons and calls a method to read the json file
+    //MODIFIES: this
     public void loadClicked() {
         if (checkBoxes.size() != 0) {
             JOptionPane.showMessageDialog(null, "Cannot load entry since you have courses added.",
@@ -286,6 +314,8 @@ public class AppGUI extends JFrame implements ActionListener {
 
     }
 
+    //EFFECTS: reads the json file
+    //MODIFIES: this
     public void loadEntry() {
         final String JSON_STORE = "./data/TermCourses.json";
         JsonReader jsonReader = new JsonReader(JSON_STORE);
@@ -299,7 +329,10 @@ public class AppGUI extends JFrame implements ActionListener {
 
         showResults();
         picture = new JLabel();
+
+
         ImageIcon imageIcon = new ImageIcon("./data/check.png");
+
         Image image = imageIcon.getImage();
         Image resized = image.getScaledInstance(50,50, Image.SCALE_SMOOTH);
         ImageIcon iconResized = new ImageIcon(resized);
@@ -314,6 +347,8 @@ public class AppGUI extends JFrame implements ActionListener {
         picturePanel.updateUI();
     }
 
+    //EFFECTS: Creates a course when the add course button is clicked
+    //MODIFIES: this
     public void addCourseButtonClicked() {
 
         String name = courseName.getText();
@@ -342,6 +377,8 @@ public class AppGUI extends JFrame implements ActionListener {
         createAddedCourseCheckButton(name);
     }
 
+    //EFFECTS: Adds the course to the panel and list of courses
+    //MODIFIES: this
     public void createAddedCourseCheckButton(String courseName) {
         JCheckBox courseToAdd = new JCheckBox(courseName);
         coursesAddedPanel.add(courseToAdd);
@@ -350,6 +387,8 @@ public class AppGUI extends JFrame implements ActionListener {
         addCourseToSystem(course);
     }
 
+    //EFFECTS: resets UI and adds course to the term
+    //MODIFIES: this
     public void addCourseToSystem(Course course) {
         courseName.setText(null);
         difficulty.setText(null);
@@ -364,6 +403,8 @@ public class AppGUI extends JFrame implements ActionListener {
         term.addCourse(course);
     }
 
+    //EFFECTS: shows result of entry
+    //MODIFIES: this
     public void showResults() {
 
         output.setText("Loaded Entry");
@@ -389,6 +430,8 @@ public class AppGUI extends JFrame implements ActionListener {
         output.setText(output.getText() + "\n\nPlease restart the application to make your own entry");
     }
 
+    //EFFECTS: remove course
+    //MODIFIES: this
     public void removeSelectedButtonClicked() {
         for (JCheckBox nextCheckBox: checkBoxes) {
             if (nextCheckBox.isSelected()) {
