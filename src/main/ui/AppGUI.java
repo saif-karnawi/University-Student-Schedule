@@ -307,9 +307,9 @@ public class AppGUI extends JFrame implements ActionListener {
                     "Error", JOptionPane.PLAIN_MESSAGE);
         } else {
             loadEntry();
-            addCourseButton.setVisible(false);
-            showResultsButton.setVisible(false);
-            removeSelectedButton.setVisible(false);
+//            addCourseButton.setVisible(false);
+//            showResultsButton.setVisible(false);
+//            removeSelectedButton.setVisible(false);
         }
 
     }

@@ -1,21 +1,21 @@
 {
     "courses": [
         {
-            "maxWeekly": 2,
-            "difficulty": 3,
-            "courseName": "CPSC 210",
-            "minWeekly": 2,
-            "time": 2,
+            "maxWeekly": 8,
+            "difficulty": 5,
+            "courseName": "MATH 200",
+            "minWeekly": 8,
+            "time": 9,
             "day1": "Wed",
             "dayCounter": 1
         },
         {
             "maxWeekly": 3,
-            "difficulty": 1,
-            "courseName": "MATH 200",
+            "difficulty": 3,
+            "courseName": "CPSC 210",
             "minWeekly": 3,
             "time": 3,
-            "day1": "Wed",
+            "day1": "Fri",
             "dayCounter": 1
         }
     ],
