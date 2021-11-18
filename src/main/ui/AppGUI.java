@@ -270,6 +270,7 @@ public class AppGUI extends JFrame implements ActionListener {
 
         if (e.getSource() == load) {
             loadClicked();
+            placeCheckBoxes();
         }
 
         if (e.getSource() == save) {
@@ -428,22 +429,48 @@ public class AppGUI extends JFrame implements ActionListener {
         output.setText(output.getText() + "\nThe minimum monthly hours you will be studying is approximately "
                 + term.getMonthlyMinHours());
         output.setText(output.getText() + "\n\nPlease restart the application to make your own entry");
+
+    }
+
+    //EFFECTS: places checkboxes in the panel for each course from loaded entry
+    //MODIFIES: this
+    public void placeCheckBoxes() {
+
+        for (Course next : term.getTermCourses()) {
+            JCheckBox box = new JCheckBox(next.getName());
+            checkBoxes.add(box);
+            coursesAddedPanel.add(box);
+            coursesAddedPanel.updateUI();
+        }
     }
 
     //EFFECTS: remove course
     //MODIFIES: this
     public void removeSelectedButtonClicked() {
+        TermCourses someTerm = new TermCourses("Some Term");
         for (JCheckBox nextCheckBox: checkBoxes) {
             if (nextCheckBox.isSelected()) {
                 String name = nextCheckBox.getText();
                 for (Course nextCourse : term.getTermCourses()) {
                     if (name.equalsIgnoreCase(nextCourse.getName())) {
-                        term.remove(nextCourse);
+                        someTerm.addCourse(nextCourse);
                         coursesAddedPanel.remove(nextCheckBox);
                         coursesAddedPanel.updateUI();
                         checkBoxes.remove(nextCheckBox);
                     }
                 }
+            }
+        }
+
+        removeCourses(someTerm);
+    }
+
+    public void removeCourses(TermCourses someTerm) {
+
+        for (Course next : someTerm.getTermCourses()) {
+
+            if (term.getTermCourses().contains(next)) {
+                term.remove(next);
             }
         }
     }
