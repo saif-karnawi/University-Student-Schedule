@@ -17,6 +17,15 @@
             "time": 5,
             "day1": "thurs",
             "dayCounter": 1
+        },
+        {
+            "maxWeekly": 4,
+            "difficulty": 4,
+            "courseName": "CPSC 213",
+            "minWeekly": 4,
+            "time": 1400,
+            "day1": "thurs",
+            "dayCounter": 1
         }
     ],
     "name": "Term"

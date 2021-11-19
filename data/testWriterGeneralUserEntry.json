@@ -5,14 +5,20 @@
             "difficulty": 3,
             "courseName": "CPSC 210",
             "minWeekly": 3,
-            "time": 1500
+            "day2": "Tuesday",
+            "time": 1500,
+            "day1": "Thursday",
+            "dayCounter": 2
         },
         {
             "maxWeekly": 8,
             "difficulty": 5,
             "courseName": "ATSC 113",
             "minWeekly": 4,
-            "time": 1500
+            "day2": "Tuesday",
+            "time": 1500,
+            "day1": "Thursday",
+            "dayCounter": 2
         }
     ],
     "name": "Winter Term"

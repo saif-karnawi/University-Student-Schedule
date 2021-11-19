@@ -56,12 +56,11 @@ class JsonReaderTest {
         JsonReader reader = new JsonReader("./data/testReaderGeneralUserEntry.json");
         try {
 
-            termCourses.addCourse(course);
-            termCourses.addCourse(course2);
+
             TermCourses termCourses = reader.read();
             assertEquals("Term", termCourses.getName());
             List<Course> lines = termCourses.getTermCourses();
-            assertEquals(2, lines.size());
+            assertEquals(3, lines.size());
 
         } catch (IOException e) {
             fail("Couldn't read from file");

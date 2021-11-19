@@ -132,4 +132,14 @@ class TermCoursesTest {
         assertTrue(termOne.toJson().has("courses"));
     }
 
+    @Test
+    void testRemove() {
+        termOne.addCourse(newCourse);
+        termOne.addCourse(newCourse2);
+
+        assertTrue(termOne.getTermCourses().contains(newCourse));
+        termOne.remove(newCourse);
+        assertTrue(!termOne.getTermCourses().contains(newCourse));
+    }
+
 }
