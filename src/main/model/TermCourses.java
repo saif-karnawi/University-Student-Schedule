@@ -18,12 +18,22 @@ public class TermCourses implements Writeable {
         this.name = name;
     }
 
+    public void logCreation() {
+        Event courseAdded = new Event("A new term has been created");
+        EventLog.getInstance().logEvent(courseAdded);
+    }
+
     public void remove(Course course) {
         for (Course next : data) {
             if (course.getName() == next.getName()) {
                 data.remove(next);
             }
         }
+    }
+
+    public void logRemoval(Course course) {
+        Event courseAdded = new Event("A course with the name " + course.getName() + " has been removed");
+        EventLog.getInstance().logEvent(courseAdded);
     }
 
     public LinkedList<Course> getTermCourses() {
@@ -34,6 +44,21 @@ public class TermCourses implements Writeable {
     //EFFECTS: Adds a course
     public void addCourse(Course courseToBeAdded) {
         data.add(courseToBeAdded);
+    }
+
+    public void logAddition(Course courseToBeAdded) {
+        Event courseAdded = new Event("A course with the name " + courseToBeAdded.getName() + " has been added");
+        EventLog.getInstance().logEvent(courseAdded);
+    }
+
+    public void logTermLoaded() {
+        Event courseAdded = new Event("A term has been loaded from the json file");
+        EventLog.getInstance().logEvent(courseAdded);
+    }
+
+    public void logTermSaved() {
+        Event courseAdded = new Event("A term has been saved to the json file");
+        EventLog.getInstance().logEvent(courseAdded);
     }
 
     //EFFECTS: Returns the sum of either maximum study hours or minimum study hours

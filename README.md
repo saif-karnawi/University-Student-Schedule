@@ -26,3 +26,8 @@ Additionally, students might also be interested in comparing the difficulties of
 ## User Stories for Phase 2
 - As a user, I want to be able to save my info / entry after the information is displayed to me.
 - As a user, I want to be able to load up the most previous entry. 
+
+# Phase 4 TASK 2: 
+Wed Nov 24 13:41:03 PST 2021
+A new term has been created
+

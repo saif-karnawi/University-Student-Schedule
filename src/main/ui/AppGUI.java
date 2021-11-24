@@ -1,6 +1,8 @@
 package ui;
 
 import model.Course;
+import model.Event;
+import model.EventLog;
 import model.TermCourses;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -11,8 +13,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 //Represents a graphical user interface of the program
@@ -63,6 +68,7 @@ public class AppGUI extends JFrame implements ActionListener {
     public AppGUI() {
         checkBoxes = new LinkedList<>();
         term = new TermCourses("Term");
+        term.logCreation();
         frame = new JFrame();
         frame.setLayout(null);
         myJPane();
@@ -118,7 +124,13 @@ public class AppGUI extends JFrame implements ActionListener {
         frame.setSize(810, 540);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                printEvents();
+            }
+        });
         frame.setLayout(null);
 
     }
@@ -256,7 +268,7 @@ public class AppGUI extends JFrame implements ActionListener {
 
         if (e.getSource() == showResultsButton) {
             showResults();
-            picturePanel.remove(picture);
+            picturePanel = new JPanel();
             picturePanel.updateUI();
         }
 
@@ -265,6 +277,7 @@ public class AppGUI extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == quit) {
+            printEvents();
             System.exit(0);
         }
 
@@ -278,6 +291,12 @@ public class AppGUI extends JFrame implements ActionListener {
         }
     }
 
+    public void printEvents() {
+        Iterator<Event> itr = EventLog.getInstance().iterator();
+        while (itr.hasNext()) {
+            System.out.println(itr.next());
+        }
+    }
 
     //EFFECTS: writes the json file and tells the user that progress is saved
     //MODIFIES: this
@@ -290,8 +309,8 @@ public class AppGUI extends JFrame implements ActionListener {
             jsonWriter.open();
             jsonWriter.write(term);
             jsonWriter.close();
-            System.out.println("Saved " + term.getName() + " to " + JSON_STORE);
-            System.out.println("Thanks for using our application! Goodbye.");
+            term.logTermSaved();
+
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
@@ -323,6 +342,7 @@ public class AppGUI extends JFrame implements ActionListener {
 
         try {
             term = jsonReader.read();
+            term.logTermLoaded();
             System.out.println("Loaded " + term.getName() + " from " + JSON_STORE + "\n");
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -402,6 +422,7 @@ public class AppGUI extends JFrame implements ActionListener {
         thursday.setSelected(false);
         friday.setSelected(false);
         term.addCourse(course);
+        term.logAddition(course);
     }
 
     //EFFECTS: shows result of entry
@@ -419,6 +440,7 @@ public class AppGUI extends JFrame implements ActionListener {
             }
 
         }
+
         output.setText(output.getText() + "\nApproximate term difficulty: " + (term.getTermDifficulty()));
         output.setText(output.getText() + "\nThe maximum daily hours you will be studying is approximately "
                 + term.getDailyMaxHours());
@@ -454,6 +476,7 @@ public class AppGUI extends JFrame implements ActionListener {
                 for (Course nextCourse : term.getTermCourses()) {
                     if (name.equalsIgnoreCase(nextCourse.getName())) {
                         someTerm.addCourse(nextCourse);
+                        term.logRemoval(nextCourse);
                         coursesAddedPanel.remove(nextCheckBox);
                         coursesAddedPanel.updateUI();
                         checkBoxes.remove(nextCheckBox);

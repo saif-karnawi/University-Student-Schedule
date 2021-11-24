@@ -1,32 +1,12 @@
 {
-    "courses": [
-        {
-            "maxWeekly": 3,
-            "difficulty": 3,
-            "courseName": "CPSC 210",
-            "minWeekly": 3,
-            "time": 900,
-            "day1": "thurs",
-            "dayCounter": 1
-        },
-        {
-            "maxWeekly": 5,
-            "difficulty": 5,
-            "courseName": "MATH 200",
-            "minWeekly": 5,
-            "time": 5,
-            "day1": "thurs",
-            "dayCounter": 1
-        },
-        {
-            "maxWeekly": 4,
-            "difficulty": 4,
-            "courseName": "CPSC 213",
-            "minWeekly": 4,
-            "time": 1400,
-            "day1": "thurs",
-            "dayCounter": 1
-        }
-    ],
+    "courses": [{
+        "maxWeekly": 2,
+        "difficulty": 2,
+        "courseName": "cpsc 2123",
+        "minWeekly": 2,
+        "time": 2,
+        "day1": "Tues",
+        "dayCounter": 1
+    }],
     "name": "Term"
 }
