@@ -31,7 +31,7 @@ Additionally, students might also be interested in comparing the difficulties of
 Wed Nov 24 13:41:03 PST 2021
 A new term has been created
 
-#Phase 4 TASK 3:
+# Phase 4 TASK 3:
 Looking at my design, there is some coupling, which I can improve upon. For example, both the AppGUI
 and UniversityStudentSchedule make the same amount of course, Json Writer, and Json Reader Objects. If was
 to change this, I would possibly make them extend a class that has a list of courses, and a json reader /
