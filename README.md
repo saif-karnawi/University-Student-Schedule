@@ -31,3 +31,16 @@ Additionally, students might also be interested in comparing the difficulties of
 Wed Nov 24 13:41:03 PST 2021
 A new term has been created
 
+#Phase 4 TASK 3:
+Looking at my design, there is some coupling, which I can improve upon. For example, both the AppGUI
+and UniversityStudentSchedule make the same amount of course, Json Writer, and Json Reader Objects. If was
+to change this, I would possibly make them extend a class that has a list of courses, and a json reader /
+writer.
+
+In addition, courses are being initiated from two different classes and are associated with three
+classes. Both the GUI and console class (UniversityStudentScheduleApp) initiate course objects
+and then add the course to a TermCourses class, where there is a linked list of type course. 
+The way I would change this is make a createCourse method in TermCourses and just pass it the
+info related to the course. That way, Course is only associated with TermCourses, where 
+termCourses can have from zero to infinity courses. In other words, AppGui and
+UniversityStudentScheduleApp don't directly create Course Objects.
