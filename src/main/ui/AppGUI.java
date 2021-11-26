@@ -292,10 +292,7 @@ public class AppGUI extends JFrame implements ActionListener {
     }
 
     public void printEvents() {
-        Iterator<Event> itr = EventLog.getInstance().iterator();
-        while (itr.hasNext()) {
-            System.out.println(itr.next());
-        }
+        term.printEvents();
     }
 
     //EFFECTS: writes the json file and tells the user that progress is saved
