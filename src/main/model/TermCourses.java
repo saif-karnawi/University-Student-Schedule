@@ -68,6 +68,7 @@ public class TermCourses implements Writeable {
             System.out.println(itr.next());
         }
     }
+
     //EFFECTS: Returns the sum of either maximum study hours or minimum study hours
     // for all he courses depending on the String argument passed. If equal to 'max',
     //it returns max hours, and returns minimum hours otherwise.
